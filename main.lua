@@ -90,8 +90,8 @@ function love.load()
 
     -- initialize our player paddles; make them global so that they can be
     -- detected by other functions and modules
-    player1 = Paddle(10, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
+    player1 = Paddle(10, VIRTUAL_HEIGHT / 2 - 2, 5, 20, {0, 255, 0})
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT / 2 - 2, 5, 20, {255, 0, 0})
 
     -- place a ball in the middle of the screen
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
@@ -151,26 +151,14 @@ function love.update(dt)
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
-
-            -- keep velocity going in the same direction, but randomize it
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
-            end
-
+            ball:updateDy()
+    
             sounds['paddle_hit']:play()
         end
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
-
-            -- keep velocity going in the same direction, but randomize it
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
-            end
+            ball:updateDy()
 
             sounds['paddle_hit']:play()
         end
@@ -358,6 +346,6 @@ end
 function displayFPS()
     -- simple FPS display across all states
     love.graphics.setFont(smallFont)
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(0, 255, 0, 128)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
 end

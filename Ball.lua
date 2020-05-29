@@ -65,3 +65,15 @@ end
 function Ball:render()
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
+
+--[[
+    After collision with paddle, keep velocity going in the same direction, but randomize it
+
+]]
+function Ball:updateDy()
+    if self.dy < 0 then
+        self.dy = -math.random(10, 150)
+    else
+        self.dy = math.random(10, 150)
+    end
+end
