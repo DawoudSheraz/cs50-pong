@@ -7,6 +7,8 @@
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
+    Extended By: Syed Muhammad Dawoud Sheraz Ali
+
     Represents a paddle that can move up and down. Used in the main
     program to deflect the ball back toward the opponent.
 ]]
@@ -72,9 +74,9 @@ end
 
 ]]
 function Paddle:determineDy(ball)
-        if ball.dy < 0 and self.y > (ball.y + 4) then
+        if ball.dy < 0 and self.y > (ball.y - 4) then
             self.dy = -PADDLE_SPEED
-        elseif ball.dy > 0 and (self.y+4) < ball.y then
+        elseif ball.dy > 0 and (self.y + 4) < ball.y then
             self.dy = PADDLE_SPEED
         else
             self.dy = 0

@@ -7,6 +7,8 @@
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
+    Extended By: Syed Muhammad Dawoud Sheraz Ali
+
     Originally programmed by Atari in 1972. Features two
     paddles, controlled by players, with the goal of getting
     the ball past your opponent's edge. First to 10 points wins.
@@ -163,20 +165,7 @@ function love.update(dt)
             sounds['paddle_hit']:play()
         end
 
-        -- detect upper and lower screen boundary collision, playing a sound
-        -- effect and reversing dy if true
-        if ball.y <= 0 then
-            ball.y = 0
-            ball.dy = -ball.dy
-            sounds['wall_hit']:play()
-        end
-
-        -- -4 to account for the ball's size
-        if ball.y >= VIRTUAL_HEIGHT - 4 then
-            ball.y = VIRTUAL_HEIGHT - 4
-            ball.dy = -ball.dy
-            sounds['wall_hit']:play()
-        end
+        ball:checkBoundaryCollision(sounds.wall_hit)
 
         -- if we reach the left edge of the screen, go back to serve
         -- and update the score and serving player

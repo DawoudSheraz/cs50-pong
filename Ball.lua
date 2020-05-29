@@ -7,6 +7,8 @@
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
+    Extended By: Syed Muhammad Dawoud Sheraz Ali
+
     Represents a ball which will bounce back and forth between paddles
     and walls until it passes a left or right boundary of the screen,
     scoring a point for the opponent.
@@ -76,4 +78,25 @@ function Ball:updateDy()
     else
         self.dy = math.random(10, 150)
     end
+end
+
+--[[
+    Checks if the ball hits either top or bottom window. If collided, reverse dy and play
+    wall collision sound.
+]]
+function Ball:checkBoundaryCollision(wall_sound)
+
+    -- Check Top 
+        if self.y <= 0 then
+            self.y = 0
+            self.dy = -self.dy
+            wall_sound:play()
+        end
+
+    -- -4 to account for the ball's size
+        if self.y >= VIRTUAL_HEIGHT - 4 then
+            self.y = VIRTUAL_HEIGHT - 4
+            self.dy = -self.dy
+            wall_sound:play()
+        end
 end
