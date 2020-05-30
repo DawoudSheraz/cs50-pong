@@ -7,6 +7,8 @@
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
+    Extended By: Syed Muhammad Dawoud Sheraz Ali
+
     Represents a paddle that can move up and down. Used in the main
     program to deflect the ball back toward the opponent.
 ]]
@@ -26,11 +28,12 @@ Paddle = Class{}
     have their own x, y, width, and height values, thus serving as containers
     for data. In this sense, they're very similar to structs in C.
 ]]
-function Paddle:init(x, y, width, height)
+function Paddle:init(x, y, width, height, color)
     self.x = x
     self.y = y
     self.width = width
     self.height = height
+    self.color = color
     self.dy = 0
 end
 
@@ -58,7 +61,10 @@ end
     newest version of LÖVE2D, you can even draw rounded rectangles!
 ]]
 function Paddle:render()
+    r, g, b, a = love.graphics.getColor()
+    love.graphics.setColor(self.color)
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+    love.graphics.setColor(r, g, b, a)
 end
 
 --[[
@@ -68,9 +74,9 @@ end
 
 ]]
 function Paddle:determineDy(ball)
-        if ball.dy < 0 and self.y > (ball.y + 4) then
+        if ball.dy < 0 and self.y > (ball.y - 4) then
             self.dy = -PADDLE_SPEED
-        elseif ball.dy > 0 and (self.y+4) < ball.y then
+        elseif ball.dy > 0 and (self.y + 4) < ball.y then
             self.dy = PADDLE_SPEED
         else
             self.dy = 0

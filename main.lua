@@ -7,6 +7,8 @@
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
+    Extended By: Syed Muhammad Dawoud Sheraz Ali
+
     Originally programmed by Atari in 1972. Features two
     paddles, controlled by players, with the goal of getting
     the ball past your opponent's edge. First to 10 points wins.
@@ -90,8 +92,8 @@ function love.load()
 
     -- initialize our player paddles; make them global so that they can be
     -- detected by other functions and modules
-    player1 = Paddle(10, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
+    player1 = Paddle(10, VIRTUAL_HEIGHT / 2 - 2, 5, 20, {0, 255, 0})
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT / 2 - 2, 5, 20, {255, 0, 0})
 
     -- place a ball in the middle of the screen
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
@@ -151,44 +153,19 @@ function love.update(dt)
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
-
-            -- keep velocity going in the same direction, but randomize it
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
-            end
-
+            ball:updateDy()
+    
             sounds['paddle_hit']:play()
         end
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
-
-            -- keep velocity going in the same direction, but randomize it
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
-            end
+            ball:updateDy()
 
             sounds['paddle_hit']:play()
         end
 
-        -- detect upper and lower screen boundary collision, playing a sound
-        -- effect and reversing dy if true
-        if ball.y <= 0 then
-            ball.y = 0
-            ball.dy = -ball.dy
-            sounds['wall_hit']:play()
-        end
-
-        -- -4 to account for the ball's size
-        if ball.y >= VIRTUAL_HEIGHT - 4 then
-            ball.y = VIRTUAL_HEIGHT - 4
-            ball.dy = -ball.dy
-            sounds['wall_hit']:play()
-        end
+        ball:checkBoundaryCollision(sounds.wall_hit)
 
         -- if we reach the left edge of the screen, go back to serve
         -- and update the score and serving player
@@ -358,6 +335,6 @@ end
 function displayFPS()
     -- simple FPS display across all states
     love.graphics.setFont(smallFont)
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(0, 255, 0, 128)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
 end
