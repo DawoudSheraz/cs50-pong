@@ -68,15 +68,23 @@ function Paddle:render()
 end
 
 --[[
+    Places the paddle in the middle of the screen, with no movement.
+]]
+function Paddle:reset()
+    self.y = VIRTUAL_HEIGHT / 2 - 2
+    self.dy = 0
+end
+
+--[[
     Used to determine the paddle position relative to ball position(player 2 AI).
     Based on whether ball is moving up or down and paddle Y co-ordinate is in vicinity
     of ball, the paddle dy is selected.
 
 ]]
 function Paddle:determineDy(ball)
-        if ball.dy < 0 and self.y > (ball.y - 4) then
+        if ball.dy < 0 and self.y > ball.y + self.height/5  then
             self.dy = -PADDLE_SPEED
-        elseif ball.dy > 0 and (self.y + 4) < ball.y then
+        elseif ball.dy > 0 and self.y < ball.y - self.height/5 then
             self.dy = PADDLE_SPEED
         else
             self.dy = 0

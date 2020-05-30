@@ -183,6 +183,8 @@ function love.update(dt)
                 gameState = 'serve'
                 -- places the ball in the middle of the screen, no velocity
                 ball:reset()
+                player1:reset()
+                player2:reset()
             end
         end
 
@@ -202,6 +204,8 @@ function love.update(dt)
                 gameState = 'serve'
                 -- places the ball in the middle of the screen, no velocity
                 ball:reset()
+                player1:reset()
+                player2:reset()
             end
         end
     end
